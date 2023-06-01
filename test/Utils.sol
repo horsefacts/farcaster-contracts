@@ -4,6 +4,7 @@ pragma solidity 0.8.18;
 import {BundleRegistry} from "../src/BundleRegistry.sol";
 import {IdRegistry} from "../src/IdRegistry.sol";
 import {NameRegistry} from "../src/NameRegistry.sol";
+import {Storage} from "../src/Storage.sol";
 
 /* solhint-disable no-empty-blocks */
 
@@ -83,3 +84,5 @@ contract BundleRegistryHarness is BundleRegistry {
         return trustedCaller;
     }
 }
+
+contract StorageHarness is Storage {}
