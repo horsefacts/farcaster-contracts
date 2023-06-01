@@ -3,7 +3,7 @@ pragma solidity 0.8.18;
 
 import {Context} from "openzeppelin/contracts/utils/Context.sol";
 import {Ownable} from "openzeppelin/contracts/access/Ownable.sol";
-import {ERC2771Context} from "openzeppelin-contracts/contracts/metatx/ERC2771Context.sol";
+import {ERC2771Context} from "openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 /**
  * @title IdRegistry
