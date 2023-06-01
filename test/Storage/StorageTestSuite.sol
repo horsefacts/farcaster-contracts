@@ -3,12 +3,13 @@ pragma solidity 0.8.18;
 
 import "forge-std/Test.sol";
 
-import {StorageHarness} from "../Utils.sol";
+import {FixedPriceStorageHarness, MockPriceFeed} from "../Utils.sol";
 
 /* solhint-disable state-visibility */
 
 abstract contract StorageTestSuite is Test {
-    StorageHarness fcStorage;
+    FixedPriceStorageHarness fcStorage;
+    MockPriceFeed priceFeed;
 
     /*//////////////////////////////////////////////////////////////
                                 CONSTANTS
@@ -19,7 +20,18 @@ abstract contract StorageTestSuite is Test {
     address owner = address(this);
 
     function setUp() public {
-        fcStorage = new StorageHarness();
+        priceFeed = new MockPriceFeed();
+        fcStorage = new FixedPriceStorageHarness(priceFeed);
+
+        priceFeed.setRoundData(
+            MockPriceFeed.RoundData({
+                roundId: 1,
+                answer: 2000e8, // $2000 USD/ETH
+                startedAt: block.timestamp,
+                timeStamp: block.timestamp,
+                answeredInRound: 1
+            })
+        );
     }
 
     /*//////////////////////////////////////////////////////////////

@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.18;
 
+import {AggregatorV3Interface} from "chainlink/v0.8/interfaces/AggregatorV3Interface.sol";
+
 import {BundleRegistry} from "../src/BundleRegistry.sol";
 import {IdRegistry} from "../src/IdRegistry.sol";
 import {NameRegistry} from "../src/NameRegistry.sol";
-import {Storage} from "../src/Storage.sol";
+import {FixedPriceStorage} from "../src/FixedPriceStorage.sol";
 
 /* solhint-disable no-empty-blocks */
 
@@ -85,4 +87,35 @@ contract BundleRegistryHarness is BundleRegistry {
     }
 }
 
-contract StorageHarness is Storage {}
+contract FixedPriceStorageHarness is FixedPriceStorage {
+    constructor(AggregatorV3Interface _priceFeed) FixedPriceStorage(_priceFeed) {}
+}
+
+contract MockPriceFeed is AggregatorV3Interface {
+    struct RoundData {
+        uint80 roundId;
+        int256 answer;
+        uint256 startedAt;
+        uint256 timeStamp;
+        uint80 answeredInRound;
+    }
+
+    RoundData public roundData;
+
+    uint8 public decimals = 8;
+    string public description = "Mock ETH/USD Price Feed";
+    uint256 public version = 1;
+
+    function setRoundData(RoundData calldata _roundData) external {
+        roundData = _roundData;
+    }
+
+    function getRoundData(uint80) external view returns (uint80, int256, uint256, uint256, uint80) {
+        return latestRoundData();
+    }
+
+    function latestRoundData() public view returns (uint80, int256, uint256, uint256, uint80) {
+        return
+            (roundData.roundId, roundData.answer, roundData.startedAt, roundData.timeStamp, roundData.answeredInRound);
+    }
+}
