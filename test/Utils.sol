@@ -7,6 +7,7 @@ import {BundleRegistry} from "../src/BundleRegistry.sol";
 import {IdRegistry} from "../src/IdRegistry.sol";
 import {NameRegistry} from "../src/NameRegistry.sol";
 import {FixedPriceStorage} from "../src/FixedPriceStorage.sol";
+import {GDAStorage} from "../src/GDAStorage.sol";
 
 /* solhint-disable no-empty-blocks */
 
@@ -89,6 +90,14 @@ contract BundleRegistryHarness is BundleRegistry {
 
 contract FixedPriceStorageHarness is FixedPriceStorage {
     constructor(AggregatorV3Interface _priceFeed) FixedPriceStorage(_priceFeed) {}
+}
+
+contract GDAStorageHarness is GDAStorage {
+    constructor(
+        int256 _initialPrice,
+        int256 _decayConstant,
+        int256 _emissionRate
+    ) GDAStorage(_initialPrice, _decayConstant, _emissionRate) {}
 }
 
 contract MockPriceFeed is AggregatorV3Interface {

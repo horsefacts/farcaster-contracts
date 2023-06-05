@@ -9,7 +9,7 @@ remappings = [
   "openzeppelin/=lib/openzeppelin-contracts/",
   "openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
   "chainlink/=lib/chainlink-brownie-contracts/contracts/src/",
-  "prb-math/=lib/prb-math/src"
+  "prb-math/=lib/prb-math/contracts"
 ]
 auto_detect_remappings = false
 
