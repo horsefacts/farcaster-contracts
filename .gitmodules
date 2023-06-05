@@ -23,3 +23,6 @@
 [submodule "lib/prb-math"]
 	path = lib/prb-math
 	url = https://github.com/PaulRBerg/prb-math
+[submodule "lib/VRGDAs"]
+	path = lib/VRGDAs
+	url = https://github.com/transmissions11/VRGDAs
