@@ -9,7 +9,8 @@ import {Initializable} from "openzeppelin-upgradeable/contracts/proxy/utils/Init
 import {PausableUpgradeable} from "openzeppelin-upgradeable/contracts/security/PausableUpgradeable.sol";
 import {UUPSUpgradeable} from "openzeppelin-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 
-import {FixedPointMathLib} from "solmate/src/utils/FixedPointMathLib.sol";
+import {FixedPointMathLib} from "solmate/utils/FixedPointMathLib.sol";
+import {wadPow} from "solmate/utils/SignedWadMath.sol";
 
 /**
  * @title NameRegistry
@@ -206,12 +207,12 @@ contract NameRegistry is
                                  STORAGE
     //////////////////////////////////////////////////////////////*/
 
-    /* 
-     * WARNING - DO NOT CHANGE THE ORDER OF THESE VARIABLES ONCE DEPLOYED 
-     * 
+    /*
+     * WARNING - DO NOT CHANGE THE ORDER OF THESE VARIABLES ONCE DEPLOYED
+     *
      * Any changes before deployment should be copied to NameRegistryV2 in NameRegistryUpdate.t.sol
-     * 
-     * Many variables are kept public to test the contract, since the inherit and extend trick in 
+     *
+     * Many variables are kept public to test the contract, since the inherit and extend trick in
      * IdRegistry is harder to pull off due to the UUPS structure.
      */
 
@@ -664,9 +665,8 @@ contract NameRegistry is
         unchecked {
             int256 periodsSD59x18 = int256((block.timestamp - auctionStartTimestamp) * DIV_28800_UD60X18);
 
-            price = BID_START_PRICE.mulWadDown(
-                uint256(FixedPointMathLib.powWad(int256(BID_PERIOD_DECREASE_UD60X18), periodsSD59x18))
-            ) + fee;
+            price =
+                BID_START_PRICE.mulWadDown(uint256(wadPow(int256(BID_PERIOD_DECREASE_UD60X18), periodsSD59x18))) + fee;
         }
 
         /* Revert if the transaction cannot pay the full price of the bid */

@@ -8,6 +8,7 @@ import {IdRegistry} from "../src/IdRegistry.sol";
 import {NameRegistry} from "../src/NameRegistry.sol";
 import {FixedPriceStorage} from "../src/FixedPriceStorage.sol";
 import {GDAStorage} from "../src/GDAStorage.sol";
+import {VRGDAStorage} from "../src/VRGDAStorage.sol";
 
 /* solhint-disable no-empty-blocks */
 
@@ -98,6 +99,15 @@ contract GDAStorageHarness is GDAStorage {
         int256 _decayConstant,
         int256 _emissionRate
     ) GDAStorage(_initialPrice, _decayConstant, _emissionRate) {}
+}
+
+contract VRGDAStorageHarness is VRGDAStorage {
+    constructor(
+        int256 _targetPrice,
+        int256 _priceDecayPercent,
+        int256 _maxSellable,
+        int256 _timeScale
+    ) VRGDAStorage(_targetPrice, _priceDecayPercent, _maxSellable, _timeScale) {}
 }
 
 contract MockPriceFeed is AggregatorV3Interface {

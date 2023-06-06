@@ -3,7 +3,7 @@ pragma solidity 0.8.18;
 
 import "forge-std/Test.sol";
 
-import {FixedPriceStorageHarness, GDAStorageHarness, MockPriceFeed} from "../Utils.sol";
+import {FixedPriceStorageHarness, GDAStorageHarness, VRGDAStorageHarness, MockPriceFeed} from "../Utils.sol";
 import {PRBMathSD59x18} from "prb-math/PRBMathSD59x18.sol";
 
 /* solhint-disable state-visibility */
@@ -13,6 +13,7 @@ abstract contract StorageTestSuite is Test {
 
     FixedPriceStorageHarness fcStorage;
     GDAStorageHarness gdaStorage;
+    VRGDAStorageHarness vrgdaStorage;
     MockPriceFeed priceFeed;
 
     /*//////////////////////////////////////////////////////////////
@@ -30,6 +31,12 @@ abstract contract StorageTestSuite is Test {
             PRBMathSD59x18.fromInt(10),
             PRBMathSD59x18.fromInt(1).div(PRBMathSD59x18.fromInt(1000)),
             PRBMathSD59x18.fromInt(1000).div(PRBMathSD59x18.fromInt(1 hours))
+        );
+        vrgdaStorage = new VRGDAStorageHarness(
+            0.0025 ether,
+            0.01e18,
+            1_000_000e18,
+            0.0001e18
         );
 
         priceFeed.setRoundData(
