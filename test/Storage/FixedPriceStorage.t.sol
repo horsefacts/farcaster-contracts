@@ -20,51 +20,51 @@ contract FixedPriceStorageTest is StorageTestSuite {
     event Purchase(address indexed buyer, uint256 indexed id, uint256 units);
 
     function testOwner() public {
-        assertEq(fcStorage.owner(), owner);
+        assertEq(fpStorage.owner(), owner);
     }
 
     function testPriceFeed() public {
-        assertEq(address(fcStorage.priceFeed()), address(priceFeed));
+        assertEq(address(fpStorage.priceFeed()), address(priceFeed));
     }
 
     function testEpochEnd() public {
-        assertEq(fcStorage.epochEnd(), block.timestamp + 365 days);
+        assertEq(fpStorage.epochEnd(), block.timestamp + 365 days);
     }
 
     function testFuzzPurchaseEmitsEvent(address msgSender, uint256 id, uint200 units) public {
-        uint256 price = fcStorage.unitPrice() * units;
+        uint256 price = fpStorage.unitPrice() * units;
         vm.deal(msgSender, price);
         vm.startPrank(msgSender);
         vm.expectEmit(true, true, false, true);
         emit Purchase(msgSender, id, units);
-        fcStorage.purchase{value: price}(id, units);
+        fpStorage.purchase{value: price}(id, units);
         vm.stopPrank();
     }
 
     function testFuzzPurchaseRevertsAfterDeadline(address msgSender, uint256 id, uint256 units) public {
-        vm.warp(fcStorage.epochEnd() + 1);
+        vm.warp(fpStorage.epochEnd() + 1);
         vm.startPrank(msgSender);
         vm.expectRevert(FixedPriceStorage.EpochOver.selector);
-        fcStorage.purchase(id, units);
+        fpStorage.purchase(id, units);
         vm.stopPrank();
     }
 
     function testUnitPrice() public {
-        assertEq(fcStorage.unitPrice(), 0.0025 ether);
+        assertEq(fpStorage.unitPrice(), 0.0025 ether);
     }
 
     function testFuzzWithdrawal(address msgSender, uint256 id, uint200 units) public {
         uint256 balanceBefore = address(owner).balance;
 
-        uint256 price = fcStorage.unitPrice() * units;
+        uint256 price = fpStorage.unitPrice() * units;
         vm.deal(msgSender, price);
         vm.startPrank(msgSender);
         vm.expectEmit(true, true, false, true);
         emit Purchase(msgSender, id, units);
-        fcStorage.purchase{value: price}(id, units);
+        fpStorage.purchase{value: price}(id, units);
 
         vm.prank(owner);
-        fcStorage.withdraw(owner);
+        fpStorage.withdraw(owner);
 
         uint256 balanceAfter = address(owner).balance;
         uint256 balanceChange = balanceAfter - balanceBefore;
@@ -75,7 +75,7 @@ contract FixedPriceStorageTest is StorageTestSuite {
     function testOnlyOwnerCanWithdraw() public {
         vm.prank(mallory);
         vm.expectRevert("Ownable: caller is not the owner");
-        fcStorage.withdraw(owner);
+        fpStorage.withdraw(owner);
     }
 
     receive() external payable {}

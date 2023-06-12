@@ -29,6 +29,7 @@ contract GDAStorageTest is StorageTestSuite {
 
     function testPurchase() public {
         uint256 start = block.timestamp;
+
         vm.warp(start + 2.675 hours);
         assertEq(gdaStorage.purchasePrice(1), 0.002370438021902501 ether);
         assertEq(gdaStorage.purchasePrice(2), 0.004749424999571362 ether);
@@ -36,7 +37,6 @@ contract GDAStorageTest is StorageTestSuite {
         assertEq(gdaStorage.purchasePrice(100), 0.284814640194665502 ether);
 
         gdaStorage.purchase{value: gdaStorage.purchasePrice(10)}(1, 10);
-
         assertEq(gdaStorage.purchasePrice(1), 0.002457328434149608 ether);
         assertEq(gdaStorage.purchasePrice(2), 0.004923519193275805 ether);
         assertEq(gdaStorage.purchasePrice(10), 0.024975948701247569 ether);

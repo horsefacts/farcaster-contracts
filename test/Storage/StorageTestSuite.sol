@@ -11,7 +11,7 @@ import {PRBMathSD59x18} from "prb-math/PRBMathSD59x18.sol";
 abstract contract StorageTestSuite is Test {
     using PRBMathSD59x18 for int256;
 
-    FixedPriceStorageHarness fcStorage;
+    FixedPriceStorageHarness fpStorage;
     GDAStorageHarness gdaStorage;
     VRGDAStorageHarness vrgdaStorage;
     MockPriceFeed priceFeed;
@@ -26,7 +26,7 @@ abstract contract StorageTestSuite is Test {
 
     function setUp() public {
         priceFeed = new MockPriceFeed();
-        fcStorage = new FixedPriceStorageHarness(priceFeed);
+        fpStorage = new FixedPriceStorageHarness(priceFeed);
         gdaStorage = new GDAStorageHarness(
             PRBMathSD59x18.fromInt(10),
             PRBMathSD59x18.fromInt(1).div(PRBMathSD59x18.fromInt(1000)),
@@ -49,8 +49,4 @@ abstract contract StorageTestSuite is Test {
             })
         );
     }
-
-    /*//////////////////////////////////////////////////////////////
-                              TEST HELPERS
-    //////////////////////////////////////////////////////////////*/
 }

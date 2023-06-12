@@ -27,7 +27,7 @@ contract VRGDAStorageTest is StorageTestSuite {
         assertEq(vrgdaStorage.epochEnd(), block.timestamp + 365 days);
     }
 
-    function testPurchase1() public {
+    function testPurchase() public {
         assertEq(vrgdaStorage.purchasePrice(), 0.002500502566798067 ether);
         for (uint256 i; i < 1_000; i++) {
             vrgdaStorage.purchase{value: vrgdaStorage.purchasePrice()}(1);
